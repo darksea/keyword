@@ -15,11 +15,11 @@ class myclass {
     myclass(int a, double b):first(a), second(b) {
     } int first;
     double second;
-    //ÖØÔØ<²Ù×÷·û£¬°´µÚ1¸öÊı¾İ³ÉÔ±ÅÅĞò
+    //é‡è½½<æ“ä½œç¬¦ï¼ŒæŒ‰ç¬¬1ä¸ªæ•°æ®æˆå‘˜æ’åº
     bool operator <(const myclass & m) const {
         return first < m.first;
 }};
-//×Ô¶¨Òå·Âº¯Êı£¬°´µÚ2¸öÊı¾İ³ÉÔ±ÅÅĞò
+//è‡ªå®šä¹‰ä»¿å‡½æ•°ï¼ŒæŒ‰ç¬¬2ä¸ªæ•°æ®æˆå‘˜æ’åº
 bool less_second(const myclass & m1, const myclass & m2)
 {
     return m1.second < m2.second;
@@ -33,13 +33,13 @@ const int c = 5;
 const float d = 0.8;
 int maxloop = 6;
  
-//³õÊ¼»¯¾Ó¼ä¶È£¨´ÓÎÄ¼şÖĞ¶ÁÈ¡£©
+//åˆå§‹åŒ–å±…é—´åº¦ï¼ˆä»æ–‡ä»¶ä¸­è¯»å–ï¼‰
 void init_bcvec(string filename)
 {
     ifstream ifs(filename.c_str());
     assert(ifs);
     string line;
-    getline(ifs, line); //´ÓµÚÒ»ĞĞÖĞÈ¡³öÈ«²¿´ÊÓïµÄ×ÜÊı
+    getline(ifs, line); //ä»ç¬¬ä¸€è¡Œä¸­å–å‡ºå…¨éƒ¨è¯è¯­çš„æ€»æ•°
     stringstream strstm(line);
     strstm >> vec_len;
     int index = 0;
@@ -51,10 +51,10 @@ void init_bcvec(string filename)
         bc_vec.push_back(mc);
         ++index;
     }
-    sort(bc_vec.begin(), bc_vec.end(), less_second);    //°´ÕÕsecond³ÉÔ±¶ÔvectorÅÅĞò
+    sort(bc_vec.begin(), bc_vec.end(), less_second);    //æŒ‰ç…§secondæˆå‘˜å¯¹vectoræ’åº
 }
  
-//¼ÆËã¾Ó¼ä¶ÈÃÜ¶È
+//è®¡ç®—å±…é—´åº¦å¯†åº¦
 void density()
 {
     int loop = 0;
@@ -64,13 +64,13 @@ void density()
     vector < myclass >::const_iterator itr;
     while (maxratio >= d && loop++ <= maxloop) {
         s *= c;
-        //°Ñ¾Ó¼ä¶ÈÆ½¾ù·ÖÎªs¸öÇø¼ä
+        //æŠŠå±…é—´åº¦å¹³å‡åˆ†ä¸ºsä¸ªåŒºé—´
         block = (bc_vec[vec_len - 1].second - bc_vec[0].second) / s;
         if (IntervalDensity != NULL)
             delete[]IntervalDensity;
         IntervalDensity = new double[s];
         itr = bc_vec.begin();
-        //¼ÆËã¸÷¸öÇø¼äÉÏÔªËØÊıÄ¿Õ¼×ÜÔªËØµÄÊıÄ¿
+        //è®¡ç®—å„ä¸ªåŒºé—´ä¸Šå…ƒç´ æ•°ç›®å æ€»å…ƒç´ çš„æ•°ç›®
         for (int i = 0; i < s; ++i) {
             while (itr != bc_vec.end()
                    && itr->second <= block * (i + 1)) {
@@ -83,10 +83,10 @@ void density()
  
         maxratio = *max_element(IntervalDensity, IntervalDensity + s);
     }
-    //²éÕÒÃ¿¸ö¶¥µã¶ÔÓ¦µÄ¾Ó¼ä¶ÈÃÜ¶È
+    //æŸ¥æ‰¾æ¯ä¸ªé¡¶ç‚¹å¯¹åº”çš„å±…é—´åº¦å¯†åº¦
     itr = bc_vec.begin();
     for (int i = 0; i < s; ++i) {
-        while (itr != bc_vec.end() && itr->second <= block * (i + 1) + 1e-8) {    //¸¡µãÔËËã´æÔÚÎó²î£¬ËùÒÔ¼ÓÉÏÕâ¸ö1e-8
+        while (itr != bc_vec.end() && itr->second <= block * (i + 1) + 1e-8) {    //æµ®ç‚¹è¿ç®—å­˜åœ¨è¯¯å·®ï¼Œæ‰€ä»¥åŠ ä¸Šè¿™ä¸ª1e-8
             int index = itr->first;
             double dens = IntervalDensity[i];
             myclass mc(index, dens);
@@ -97,10 +97,10 @@ void density()
     delete[]IntervalDensity;
 }
  
-//°Ñ¾Ó¼ä¶ÈÃÜ¶ÈÊä³öµ½ÎÄ¼ş
+//æŠŠå±…é—´åº¦å¯†åº¦è¾“å‡ºåˆ°æ–‡ä»¶
 void printDensity(string infile, string outfile)
 {
-    //Vd°´firstÅÅĞò
+    //VdæŒ‰firstæ’åº
     sort(bcdens_vec.begin(), bcdens_vec.end());
     ifstream ifs(infile.c_str());
     ofstream ofs(outfile.c_str());

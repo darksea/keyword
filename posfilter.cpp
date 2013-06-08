@@ -7,30 +7,30 @@ using namespace std;
  
 int main(int argc, char *argv[])
 {
-    if (argc < 2) {      //ÃüÁîĞĞÖĞĞèÒª¸ø¶¨Òª´¦ÀíµÄÎÄ¼şÃû
+    if (argc < 2) {      //å‘½ä»¤è¡Œä¸­éœ€è¦ç»™å®šè¦å¤„ç†çš„æ–‡ä»¶å
         cout << "Usage:command filename" << endl;
         return 1;
     }
  
-    string arr_pos[] = { "/n",  //Ãû´Ê
-        "/nr",      //ÈËÃû
-        "/nr1",     //ººÓïĞÕÊÏ
-        "/nr2",     //ººÓïÃû×Ö
-        "/nrj",     //ÈÕÓïÈËÃû
-        "/ns",      //µØÃû
-        "/nt",      //»ú¹¹ÍÅÌåÃû
-        "/wj",      //¾äºÅ
-        "/nl",      //Ãû´ÊĞÔ¹ßÓÃÓï
-        "/ng",      //Ãû´ÊĞÔÓïËØ
-        "/v",       //¶¯´Ê
-        "/vd",      //¸±¶¯´Ê
-        "/vn",      //Ãû¶¯´Ê
-        "/vl",      //¶¯´ÊĞÔ¹ßÓÃÓï
-        "/vg",      //¶¯´ÊĞÔÓïËØ
-        "/a",       //ĞÎÈİ´Ê
-        "/an",      //ÃûĞÎ´Ê
-        "/ag",      //ĞÎÈİ´ÊĞÔÓïËØ
-        "/al",      //ĞÎÈİ´ÊĞÔ¹ßÓÃÓï
+    string arr_pos[] = { "/n",  //åè¯
+        "/nr",      //äººå
+        "/nr1",     //æ±‰è¯­å§“æ°
+        "/nr2",     //æ±‰è¯­åå­—
+        "/nrj",     //æ—¥è¯­äººå
+        "/ns",      //åœ°å
+        "/nt",      //æœºæ„å›¢ä½“å
+        "/wj",      //å¥å·
+        "/nl",      //åè¯æ€§æƒ¯ç”¨è¯­
+        "/ng",      //åè¯æ€§è¯­ç´ 
+        "/v",       //åŠ¨è¯
+        "/vd",      //å‰¯åŠ¨è¯
+        "/vn",      //ååŠ¨è¯
+        "/vl",      //åŠ¨è¯æ€§æƒ¯ç”¨è¯­
+        "/vg",      //åŠ¨è¯æ€§è¯­ç´ 
+        "/a",       //å½¢å®¹è¯
+        "/an",      //åå½¢è¯
+        "/ag",      //å½¢å®¹è¯æ€§è¯­ç´ 
+        "/al",      //å½¢å®¹è¯æ€§æƒ¯ç”¨è¯­
         ""
     };
     set < string > set_pos;
@@ -41,8 +41,8 @@ int main(int argc, char *argv[])
     string filename(argv[1]);
     string outfile = filename + "_pos";
  
-    ifstream ifs(filename.c_str()); //´ò¿ªÊäÈëÎÄ¼ş
-    ofstream ofs(outfile.c_str());  //´ò¿ªÊä³öÎÄ¼ş
+    ifstream ifs(filename.c_str()); //æ‰“å¼€è¾“å…¥æ–‡ä»¶
+    ofstream ofs(outfile.c_str());  //æ‰“å¼€è¾“å‡ºæ–‡ä»¶
     if (!(ifs && ofs)) {
         cerr << "error:open file failed." << endl;
         return 1;
@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
         bool flag = false;
         int length = word.find("/");
         //cout<<word<<"\t"<<length<<endl;
-        if (length == 3 && strncmp(word.c_str(), "¡£", 3) != 0)  //¹ıÂËµôµ¥¸öºº×Ö£¬µ«ÊÇ²»¹ıÂËÈ«½Ç¾äºÅ(ÒòÎªÒ»¸öºº×Ö¾Í3¸ö×Ö½Ú)
+        if (length == 3 && strncmp(word.c_str(), "ã€‚", 3) != 0)  //è¿‡æ»¤æ‰å•ä¸ªæ±‰å­—ï¼Œä½†æ˜¯ä¸è¿‡æ»¤å…¨è§’å¥å·(å› ä¸ºä¸€ä¸ªæ±‰å­—å°±3ä¸ªå­—èŠ‚)
             continue;
         string pos = word.substr(length);
         if (set_pos.find(pos) != set_pos.end())

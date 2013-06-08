@@ -9,16 +9,16 @@
  
 using namespace std;
  
-/**ÏàËÆ¶È¼ÆËãÏà¹Ø²ÎÊıÉèÖÃ**/
+/**ç›¸ä¼¼åº¦è®¡ç®—ç›¸å…³å‚æ•°è®¾ç½®**/
 const double init_dist = 10;
 const double alpha = 5.0;
 const double beta = 0.66;
 const double weight[6] = { 1.0, 0.5, 0.25, 0.125, 0.06, 0.03 };
  
-GDBM_FILE dbm_ptr;      //Êı¾İ¿â¾ä±ú
-vector <string> words;    //´æ´¢ÎÄÕÂÖĞ³öÏÖµÄ´Ê
+GDBM_FILE dbm_ptr;      //æ•°æ®åº“å¥æŸ„
+vector <string> words;    //å­˜å‚¨æ–‡ç« ä¸­å‡ºç°çš„è¯
  
-/**¶Á³öËùÓĞµÄ´Ê£¬´æÈëvector**/
+/**è¯»å‡ºæ‰€æœ‰çš„è¯ï¼Œå­˜å…¥vector**/
 void initWords(string filename)
 {
     ifstream ifs(filename.c_str());
@@ -27,26 +27,26 @@ void initWords(string filename)
     while (getline(ifs, line)) {
         istringstream stream(line);
         string word;
-        stream >> word;   //¶Á³öÒ»ĞĞÖĞµÄÊ×ÁĞ´ÊÓï¼´¿É
+        stream >> word;   //è¯»å‡ºä¸€è¡Œä¸­çš„é¦–åˆ—è¯è¯­å³å¯
         words.push_back(word);
     }
     ifs.close();
 }
  
-/**¼ÆËãÁ½¸ö±àÂë(±àÂë·ÖÎªcodeÎ»ºÍ±êÖ¾Î»)µÄ¾àÀë**/
+/**è®¡ç®—ä¸¤ä¸ªç¼–ç (ç¼–ç åˆ†ä¸ºcodeä½å’Œæ ‡å¿—ä½)çš„è·ç¦»**/
 double calDist(string code1, string code2)
 {
-    if (code1[7] == '@' || code2[7] == '@') /*´ÊÓï×ÔÎÒ·â±Õ¡¢¶ÀÁ¢£¬ÔÚÍ¬Òå´Ê´ÊÁÖÖĞ¼ÈÃ»ÓĞÍ¬Òå´Ê£¬Ò²Ã»ÓĞÏà¹Ø´Ê */
+    if (code1[7] == '@' || code2[7] == '@') /*è¯è¯­è‡ªæˆ‘å°é—­ã€ç‹¬ç«‹ï¼Œåœ¨åŒä¹‰è¯è¯æ—ä¸­æ—¢æ²¡æœ‰åŒä¹‰è¯ï¼Œä¹Ÿæ²¡æœ‰ç›¸å…³è¯ */
         return init_dist;
-    double dist = -10;  //³õÊ¼¾àÀë¸øÒ»¸ö¸ºÊı
-    int eqi = 0;        //Á½¸öcodeÏàÍ¬µÄ±¶Êı
+    double dist = -10;  //åˆå§‹è·ç¦»ç»™ä¸€ä¸ªè´Ÿæ•°
+    int eqi = 0;        //ä¸¤ä¸ªcodeç›¸åŒçš„å€æ•°
     int i;
     for (i = 0; i < 7; ++i) {
         if (code1[i] != code2[i])
             break;
         eqi++;
     }
-    if (i < 7) {     //codeÎ»²»Í¬
+    if (i < 7) {     //codeä½ä¸åŒ
         switch (eqi) {
         case 0:
         case 1:
@@ -64,15 +64,15 @@ double calDist(string code1, string code2)
         default:
             break;
         }
-    } else {        //codeÎ»ÏàÍ¬
-        if (code1[i] == code2[i]) { //±êÖ¾Î»ÏàÍ¬
-            if (code1[i] == '=')    //Í¬Òå
+    } else {        //codeä½ç›¸åŒ
+        if (code1[i] == code2[i]) { //æ ‡å¿—ä½ç›¸åŒ
+            if (code1[i] == '=')    //åŒä¹‰
                 dist = 0;
-            else if (code1[i] == '#')   //Í¬Àà
+            else if (code1[i] == '#')   //åŒç±»
                 dist = weight[5] * init_dist;
-        } else {    //Ö»ÓĞcodeÎ»ÏàÍ¬£¬±êÖ¾Î»¾ÍÒ»¶¨ÏàÍ¬£¬ËùÒÔelseµÄÇé¿ö²»»áÁËÉú
-            cout << code1 << "ºÍ" << code2 <<
-                "codeÎ»ÏàÍ¬£¬±êÖ¾Î»¾ÓÈ»²»ÏàÍ¬£¡" <<
+        } else {    //åªæœ‰codeä½ç›¸åŒï¼Œæ ‡å¿—ä½å°±ä¸€å®šç›¸åŒï¼Œæ‰€ä»¥elseçš„æƒ…å†µä¸ä¼šäº†ç”Ÿ
+            cout << code1 << "å’Œ" << code2 <<
+                "codeä½ç›¸åŒï¼Œæ ‡å¿—ä½å±…ç„¶ä¸ç›¸åŒï¼" <<
                 endl;
             return -1;
         }
@@ -80,10 +80,10 @@ double calDist(string code1, string code2)
     return dist;
 }
  
-/**¼ÆËãÁ½¸ö´ÊµÄÏàËÆ¶È**/
+/**è®¡ç®—ä¸¤ä¸ªè¯çš„ç›¸ä¼¼åº¦**/
 double calSim(string word1, string word2)
 {
-    if (word1 == word2) //Èç¹ûÊÇÍ¬Ò»¸ö´Ê£¬ÔòÏàËÆ¶ÈÎª1
+    if (word1 == word2) //å¦‚æœæ˜¯åŒä¸€ä¸ªè¯ï¼Œåˆ™ç›¸ä¼¼åº¦ä¸º1
         return 1;
     datum key1, data1, key2, data2;
     key1.dptr = (char *)word1.c_str();
@@ -95,36 +95,36 @@ double calSim(string word1, string word2)
     data2 = gdbm_fetch(dbm_ptr, key2);
     int size2 = data2.dsize;
  
-    if (size1 != 0 && size2 != 0) { //Á½¸ö´Ê¶¼ÔÚ´ÊÁÖÖĞÕÒµÃµ½
+    if (size1 != 0 && size2 != 0) { //ä¸¤ä¸ªè¯éƒ½åœ¨è¯æ—ä¸­æ‰¾å¾—åˆ°
         int i, j;
         string word1;
         vector <string> vec1, vec2;
         string buffer1(data1.dptr);
         istringstream stream1(buffer1);
         stream1 >> word1;
-        stream1 >> word1; //Â·¹ıÇ°Á½ÁĞ
+        stream1 >> word1; //è·¯è¿‡å‰ä¸¤åˆ—
         while (stream1 >> word1) {
-            vec1.push_back(word1);  //°Ñ´Ê¶ÔÓ¦µÄ±àÂë¶¼´æÈëvectorÖĞ 
+            vec1.push_back(word1);  //æŠŠè¯å¯¹åº”çš„ç¼–ç éƒ½å­˜å…¥vectorä¸­ 
         }
         string word2;
         string buffer2(data2.dptr);
         istringstream stream2(buffer2);
         stream2 >> word2;
-        stream2 >> word2; //Â·¹ıÇ°Á½ÁĞ
+        stream2 >> word2; //è·¯è¿‡å‰ä¸¤åˆ—
         while (stream2 >> word2) {
             vec2.push_back(word2);
         }
-        double minDist = INT_MAX;   //³õÊ¼¾àÀëÎªÎŞÇî´ó
+        double minDist = INT_MAX;   //åˆå§‹è·ç¦»ä¸ºæ— ç©·å¤§
         for (int i = 0; i != vec1.size(); ++i) {
             for (int j = 0; j != vec2.size(); ++j) {
-                //cout<<vec1[i]<<"ºÍ"<<vec2[j]<<"µÄ¾àÀë"<<endl;
+                //cout<<vec1[i]<<"å’Œ"<<vec2[j]<<"çš„è·ç¦»"<<endl;
                 double dist = calDist(vec1[i], vec2[j]);
                 if (dist < minDist)
-                    minDist = dist; //Á½¸ö´ÊµÄ¾àÀëÊÇËùÓĞ±àÂë×éºÏÖĞ¾àÀëµÄ×îĞ¡Öµ
+                    minDist = dist; //ä¸¤ä¸ªè¯çš„è·ç¦»æ˜¯æ‰€æœ‰ç¼–ç ç»„åˆä¸­è·ç¦»çš„æœ€å°å€¼
             }
         }
-        return alpha / (alpha + minDist);   //´Ó¾àÀëµ½ÏàËÆ¶ÈµÄ×ª»»
-    } else          //Ö»ÒªÓĞÒ»¸ö´Ê²»ÔÚ´ÊÁÖÖĞ£¬Ôò·µ»ØÏàËÆ¶ÈÎª0
+        return alpha / (alpha + minDist);   //ä»è·ç¦»åˆ°ç›¸ä¼¼åº¦çš„è½¬æ¢
+    } else          //åªè¦æœ‰ä¸€ä¸ªè¯ä¸åœ¨è¯æ—ä¸­ï¼Œåˆ™è¿”å›ç›¸ä¼¼åº¦ä¸º0
         return 0;
 }
  
@@ -138,12 +138,12 @@ int main(int argc, char *argv[])
     initWords(infile);
     dbm_ptr = gdbm_open("sydb", 0, GDBM_READER, S_IRUSR | S_IWUSR, NULL);
     ofstream ofs("simadj");
-    ofs << words.size() << endl;    //°ÑÁÚ½Ó¾ØÕóµÄ¹æÄ£Ğ´ÈëÎÄ¼şÊ×ĞĞ
+    ofs << words.size() << endl;    //æŠŠé‚»æ¥çŸ©é˜µçš„è§„æ¨¡å†™å…¥æ–‡ä»¶é¦–è¡Œ
     for (int i = 0; i != words.size(); ++i) {
         ofs << i << "\t";
-        for (int j = 0; j < i; ++j) {    //°Ñ¶¥µãÖ®¼äµÄÏàËÆ¶È´æÈëÏÂÈı½Ç¾ØÕó
+        for (int j = 0; j < i; ++j) {    //æŠŠé¡¶ç‚¹ä¹‹é—´çš„ç›¸ä¼¼åº¦å­˜å…¥ä¸‹ä¸‰è§’çŸ©é˜µ
             double sim = calSim(words[i], words[j]);
-            if (sim > beta)  //ÏàËÆ¶È´óÓÚãĞÖµÊ±²ÅÈÏÎªÁ½¸ö¶¥µãÖ®¼äÓĞ±ß
+            if (sim > beta)  //ç›¸ä¼¼åº¦å¤§äºé˜ˆå€¼æ—¶æ‰è®¤ä¸ºä¸¤ä¸ªé¡¶ç‚¹ä¹‹é—´æœ‰è¾¹
                 ofs << j << "(" << sim << ")" << "\t";
         }
         ofs << endl;

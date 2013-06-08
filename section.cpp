@@ -6,37 +6,37 @@ using namespace std;
  
 int main(int argc, char *argv[])
 {
-    if (argc < 2) {      //ÃüÁîĞĞÖĞĞèÒª¸ø¶¨Òª´¦ÀíµÄÎÄ¼şÃû
+    if (argc < 2) {      //å‘½ä»¤è¡Œä¸­éœ€è¦ç»™å®šè¦å¤„ç†çš„æ–‡ä»¶å
         cout << "Usage:command filename" << endl;
         return 1;
     }
-    string filename(argv[1]);   //ÊäÈëÎÄ¼şÃû
-    string outfile = filename + "_part";    //Êä³öÎÄ¼şÃû
-    ifstream ifs(filename.c_str()); //´ò¿ªÊäÈëÎÄ¼ş
-    ofstream ofs(outfile.c_str());  //´ò¿ªÊä³öÎÄ¼ş
+    string filename(argv[1]);   //è¾“å…¥æ–‡ä»¶å
+    string outfile = filename + "_part";    //è¾“å‡ºæ–‡ä»¶å
+    ifstream ifs(filename.c_str()); //æ‰“å¼€è¾“å…¥æ–‡ä»¶
+    ofstream ofs(outfile.c_str());  //æ‰“å¼€è¾“å‡ºæ–‡ä»¶
     if (!(ifs && ofs)) {
         cerr << "error:open file failed." << endl;
         return 1;
     }
     string content, word;
-    while (ifs >> word)   //°ÑÎÄ¼şµÄÄÚÈİÈ«²¿¶Áµ½contentÖĞ£¬È¥³ıÁË»»ĞĞ·û£¬Ïàµ±ÓÚ°ÑÕûÆªÎÄµµºÏ²¢³ÉÁËÒ»ĞĞ
+    while (ifs >> word)   //æŠŠæ–‡ä»¶çš„å†…å®¹å…¨éƒ¨è¯»åˆ°contentä¸­ï¼Œå»é™¤äº†æ¢è¡Œç¬¦ï¼Œç›¸å½“äºæŠŠæ•´ç¯‡æ–‡æ¡£åˆå¹¶æˆäº†ä¸€è¡Œ
         content.append(word + "\t");
  
-    string period = "¡£/wj";
-    string::size_type front = content.find(period); //Ñ°ÕÒµÚÒ»¸ö¾äºÅËùÔÚµÄÎ»ÖÃ
+    string period = "ã€‚/wj";
+    string::size_type front = content.find(period); //å¯»æ‰¾ç¬¬ä¸€ä¸ªå¥å·æ‰€åœ¨çš„ä½ç½®
     assert(front != string::npos);
     content.replace(front, 6, "\t\t\t\t\n\n");
  
-    front = content.find(period, front + 1);    //Ñ°ÕÒµÚ¶ş¸ö¾äºÅËùÔÚµÄÎ»ÖÃ
-    front = content.find(period, front + 1);    //Ñ°ÕÒµÚÈı¸ö¾äºÅËùÔÚµÄÎ»ÖÃ
+    front = content.find(period, front + 1);    //å¯»æ‰¾ç¬¬äºŒä¸ªå¥å·æ‰€åœ¨çš„ä½ç½®
+    front = content.find(period, front + 1);    //å¯»æ‰¾ç¬¬ä¸‰ä¸ªå¥å·æ‰€åœ¨çš„ä½ç½®
     content.replace(front, 6, "\t\t\t\t\n\n");
  
-    string::size_type back = content.rfind(period); //×îºóÒ»¸ö¾äºÅ
+    string::size_type back = content.rfind(period); //æœ€åä¸€ä¸ªå¥å·
     assert(back != string::npos);
     content.replace(back, 3, ".");
-    back = content.rfind(period);   //µ¹ÊıµÚ¶ş¸ö¾äºÅ
+    back = content.rfind(period);   //å€’æ•°ç¬¬äºŒä¸ªå¥å·
     content.replace(back, 3, ".");
-    back = content.rfind(period);   //µ¹ÊıµÚÈı¸ö¾äºÅ
+    back = content.rfind(period);   //å€’æ•°ç¬¬ä¸‰ä¸ªå¥å·
     content.replace(back, 6, "\t\t\t\t\n\n");
  
     ofs << content;

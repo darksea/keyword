@@ -1,13 +1,13 @@
-#include<utility>
-#include<climits>
-#include<vector>
-#include<fstream>
-#include<iostream>
-#include<sstream>
-#include<cassert>
-#include<cstdlib>
-#include<list>
-#include"pairheap.h"
+#include <utility>
+#include <climits>
+#include <vector>
+#include <fstream>
+#include <iostream>
+#include <sstream>
+#include <cassert>
+#include <cstdlib>
+#include <list>
+#include "pairheap.h"
 using namespace std;
  
 struct Table {
@@ -27,14 +27,14 @@ struct Node{
 
 };
  
-int vertextNum;         //¶¥µãÊı
-double **adjMatrix;     //ÓÃÁÚ½Ó¾ØÕóÀ´´æ´¢Í¼
-vector < Table > dijkTable;   //dijkstraÎ¬»¤µÄ±í
+int vertextNum;         //é¡¶ç‚¹æ•°
+double **adjMatrix;     //ç”¨é‚»æ¥çŸ©é˜µæ¥å­˜å‚¨å›¾
+vector < Table > dijkTable;   //dijkstraç»´æŠ¤çš„è¡¨
 double *pairDependency;
 
-vector <string> words;    //´æ´¢ÎÄÕÂÖĞ³öÏÖµÄ´Ê
+vector <string> words;    //å­˜å‚¨æ–‡ç« ä¸­å‡ºç°çš„è¯
  
-/**¶Á³öËùÓĞµÄ´Ê£¬´æÈëvector**/
+/**è¯»å‡ºæ‰€æœ‰çš„è¯ï¼Œå­˜å…¥vector**/
 void initWords(string filename)
 {
     ifstream ifs(filename.c_str());
@@ -43,7 +43,7 @@ void initWords(string filename)
     while (getline(ifs, line)) {
         istringstream stream(line);
         string word;
-        stream >> word;   //¶Á³öÒ»ĞĞÖĞµÄÊ×ÁĞ´ÊÓï¼´¿É
+        stream >> word;   //è¯»å‡ºä¸€è¡Œä¸­çš„é¦–åˆ—è¯è¯­å³å¯
         words.push_back(word);
     }
     ifs.close();
@@ -55,12 +55,12 @@ void initMatrix(string filename)
     assert(ifs);
     int scale;
     string line;
-    getline(ifs, line); //¶Á³öµÚÒ»ĞĞ£¬´æ·Å×Å¾ØÕóµÄ¹æÄ£
+    getline(ifs, line); //è¯»å‡ºç¬¬ä¸€è¡Œï¼Œå­˜æ”¾ç€çŸ©é˜µçš„è§„æ¨¡
     istringstream stream(line);
     stream >> scale;
     vertextNum = scale;
  
-    adjMatrix = new double *[scale];    //¶¯Ì¬´´½¨¶şÎ¬Êı×é
+    adjMatrix = new double *[scale];    //åŠ¨æ€åˆ›å»ºäºŒç»´æ•°ç»„
     for (int i = 0; i < scale; ++i) {
         adjMatrix[i] = new double[scale];
         for (int j = 0; j < scale; ++j)
@@ -72,7 +72,7 @@ void initMatrix(string filename)
     int vari;
     while (getline(ifs, line)) {
         istringstream strm(line);
-        strm >> vari; //µÚÒ»ÁĞ´æ´¢µÄÊÇ¶¥µãµÄindex
+        strm >> vari; //ç¬¬ä¸€åˆ—å­˜å‚¨çš„æ˜¯é¡¶ç‚¹çš„index
         row = vari;
         while (strm >> word) {
             int pos1 = word.find("(");
@@ -89,7 +89,7 @@ void initMatrix(string filename)
     ifs.close();
 }
  
-/*ÊÍ·ÅÁÚ½Ó¾ØÕó*/
+/*é‡Šæ”¾é‚»æ¥çŸ©é˜µ*/
 void deleteMatrix()
 {
     for (int i = 0; i < vertextNum; ++i)
@@ -142,9 +142,9 @@ void addNode(Node<string> *nodeP,int index,int startindex,list<Node<string> *> *
     }
 } 
 
-/*¸ù¾İDijkTable´òÓ¡ËùÓĞµÄ×î¶ÌÂ·½*/
+/*æ ¹æ®DijkTableæ‰“å°æ‰€æœ‰çš„æœ€çŸ­è·¯å¾‘*/
 void printSPathFromSource(int startindex){
-    ofstream ofs("shortpath",ofstream::app);        //°ÑËùÓĞµÄ×î¶ÌÂ·¾¶×·¼Ó·½Ê½Ğ´ÈëÎÄ¼ş
+    ofstream ofs("shortpath",ofstream::app);        //æŠŠæ‰€æœ‰çš„æœ€çŸ­è·¯å¾„è¿½åŠ æ–¹å¼å†™å…¥æ–‡ä»¶
     for (int endindex = 0; endindex < vertextNum; ++endindex) {
         list<Node<string> *> leafNodes;
         Node<string>* nodeP=new Node<string>(words[endindex]);
@@ -163,7 +163,7 @@ void printSPathFromSource(int startindex){
     }
 }
  
-/*Ö¸¶¨Æğµã£¬ÔËĞĞ´øpairingheapµÄdijkstraËã·¨*/
+/*æŒ‡å®šèµ·ç‚¹ï¼Œè¿è¡Œå¸¦pairingheapçš„dijkstraç®—æ³•*/
 void dijkstra(int start)
 {
     initDijkTable();
@@ -219,12 +219,12 @@ void ancRat(double base, int index, int start)
         int ind = dijkTable[index].pv.at(i);
         if (ind == start)
             continue;
-        pairDependency[ind] += base / (len * vertextNum);   //·ÖÄ¸ÉÏ¼ÓÒ»ÏîvertextNum,ÊÇÎªÁË±ÜÃâ¼ÆËã³öÀ´µÄ¾Ó¼ä¶ÈÌ«´ó
+        pairDependency[ind] += base / (len * vertextNum);   //åˆ†æ¯ä¸ŠåŠ ä¸€é¡¹vertextNum,æ˜¯ä¸ºäº†é¿å…è®¡ç®—å‡ºæ¥çš„å±…é—´åº¦å¤ªå¤§
         ancRat(pairDependency[ind], ind, start);
     }
 }
  
-/*¼ÆËã´Ó¶¥µãstartµ½terminalµÄ×î¶ÌÂ·¾¶ÉÏµÄËùÓĞ½ÚµãµÄpair-dependency*/
+/*è®¡ç®—ä»é¡¶ç‚¹startåˆ°terminalçš„æœ€çŸ­è·¯å¾„ä¸Šçš„æ‰€æœ‰èŠ‚ç‚¹çš„pair-dependency*/
 void pairDepend(int start, int terminal)
 {
     ancRat(1.0, terminal, start);
@@ -238,7 +238,7 @@ int main(int argc, char *argv[])
     }
     string filename(argv[1]);
     initWords(argv[2]);
-    initMatrix(filename);   //³õÊ¼»ªÁÚ½Ó¾ØÕó
+    initMatrix(filename);   //åˆå§‹åé‚»æ¥çŸ©é˜µ
     pairDependency = new double[vertextNum];
     for (int i = 0; i < vertextNum; ++i)
         pairDependency[i] = 0;
@@ -246,7 +246,7 @@ int main(int argc, char *argv[])
         dijkstra(i);
         printSPathFromSource(i);
         //printDijkTable();
-        for (int j = 0; j < i; ++j) {    //ÒòÎªÊÇÎŞÏòÍ¼£¬ËùÒÔËãÒ»°ë¾Í¹»ÁË
+        for (int j = 0; j < i; ++j) {    //å› ä¸ºæ˜¯æ— å‘å›¾ï¼Œæ‰€ä»¥ç®—ä¸€åŠå°±å¤Ÿäº†
             pairDepend(i, j);
         }
     }

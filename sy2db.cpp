@@ -7,7 +7,7 @@ using namespace std;
  
 int main(int argc, char *argv[])
 {
-    string infile("a.mdb");
+    string infile("synonyms.txt");
     ifstream ifs(infile.c_str());
     if (!ifs) {
         cerr << "open file failed!" << endl;
@@ -21,12 +21,15 @@ int main(int argc, char *argv[])
     string line, word;
     while (getline(ifs, line)) {
         istringstream stream(line);
-        stream >> word;   //取出每行的第一列作为key
+        stream >> word;   //鍙栧嚭姣忚鐨勭涓�鍒椾綔涓簁ey
         key.dptr = (char *)word.c_str();
         key.dsize = word.size() + 1;
         data.dptr = (char *)line.c_str();
         data.dsize = line.size() + 1;
         gdbm_store(dbm_ptr, key, data, GDBM_REPLACE);
+        cout<<line.c_str()<<endl;
+        cout<<word.c_str()<<endl;
+        cout<<endl;
     }
  
     ifs.close();

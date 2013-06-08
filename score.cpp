@@ -1,3 +1,4 @@
+
 #include<fstream>
 #include<iostream>
 #include<cassert>
@@ -18,7 +19,7 @@ class myclass {
 }};
  
 priority_queue < myclass > maxPQ;
-int queue_size;         //¿ØÖÆ´ó¸ù¶ÑµÄÈİÁ¿£¬¼´¹Ø¼ü´ÊµÄÊıÄ¿
+int queue_size;         //æ§åˆ¶å¤§æ ¹å †çš„å®¹é‡ï¼Œå³å…³é”®è¯çš„æ•°ç›®
  
 const float vdw = 0.6;
 const float tw = 0.4;
@@ -35,20 +36,20 @@ double getScore(int wordlen, string pos, int count, int title, int head,
     double score = 0.0;
     double pos_score;
     int len = pos.size();
-    if (pos[len - 1] == 'g') {  //ÓïËØ
+    if (pos[len - 1] == 'g') {  //è¯­ç´ 
         pos_score = 0.2;
-    } else if (pos[0] == 'n'    //Ãû´Ê
-           || pos[len - 1] == 'n'   //Ãû¶¯´Ê»òÃûĞÎ´Ê
-           || pos[len - 1] == 'l') {    //³ÉÓï»òÏ°ÓÃÓï
+    } else if (pos[0] == 'n'    //åè¯
+           || pos[len - 1] == 'n'   //ååŠ¨è¯æˆ–åå½¢è¯
+           || pos[len - 1] == 'l') {    //æˆè¯­æˆ–ä¹ ç”¨è¯­
         pos_score = 0.6;
-    } else if (pos == "v") {    //¶¯´Ê
+    } else if (pos == "v") {    //åŠ¨è¯
         pos_score = 0.3;
-    } else if (pos == "vd") {   //¸±¶¯´Ê
+    } else if (pos == "vd") {   //å‰¯åŠ¨è¯
         pos_score = 0.4;
-    } else if (pos == "a") {    //ĞÎÈİ´Ê
+    } else if (pos == "a") {    //å½¢å®¹è¯
         pos_score = 0.5;
     } else {
-        cerr << "´æÔÚÎ´Öª´ÊĞÔ." << endl;
+        cerr << "å­˜åœ¨æœªçŸ¥è¯æ€§." << endl;
         pos_score = 0.0;
     }
     score =
@@ -65,6 +66,8 @@ int main(int argc, char *argv[])
             endl;
         return 0;
     }
+    string keyword = "";
+    keyword+="firefox http://www.google.com.hk/search?q=";
     queue_size = atoi(argv[2]);
     string outfile = "kw_score";
     ifstream ifs(argv[1]);
@@ -81,7 +84,7 @@ int main(int argc, char *argv[])
         double score =
             getScore(word.size() / 3, pos, count, title, head, tail,
                  bcdens);
-        ofs << word << "\t" << score << endl;
+        //ofs << word << "\t" << score << endl;
         myclass mc(word, score);
         if (maxPQ.size() == queue_size) {
             if (mc < maxPQ.top()) {
@@ -94,7 +97,7 @@ int main(int argc, char *argv[])
     }
     ifs.close();
     ofs.close();
-    cout << "¹Ø¼ü´Ê:" << endl;
+    //cout << "å…³é”®è¯:" << endl;
     stack<myclass> st;
     while (!maxPQ.empty()) {
         myclass mc = maxPQ.top();
@@ -103,8 +106,13 @@ int main(int argc, char *argv[])
     }
     while(!st.empty()){
         myclass mc = st.top();
-        cout << mc.word << "\t" << mc.score << endl;
+        //cout << mc.word << "\t" << mc.score << endl;
+        keyword+=mc.word;
+        keyword+="+";
+        //cout<<mc.word<<endl;
         st.pop();
     }
+    //cout<<keyword;
+    system(keyword.c_str());
     return 0;
 }

@@ -6,16 +6,16 @@
 using namespace std;
  
 struct Tuple {
-    string word;        //´ÊÓï
-    string pos;     //´ÊĞÔ
-    int occurs;     //³öÏÖ´ÎÊı
-    short local1;       //±êÌâÖĞ³öÏÖ
-    short local2;       //¶ÎÊ×³öÏÖ
-    short local3;       //¶ÎÎ²³öÏÖ
+    string word;        //è¯è¯­
+    string pos;     //è¯æ€§
+    int occurs;     //å‡ºç°æ¬¡æ•°
+    short local1;       //æ ‡é¢˜ä¸­å‡ºç°
+    short local2;       //æ®µé¦–å‡ºç°
+    short local3;       //æ®µå°¾å‡ºç°
  
-    //¹¹Ôìº¯Êı
+    //æ„é€ å‡½æ•°
      Tuple() {
-    };          //ÓÉÓÚTupleÒª×÷ÎªmapµÄsecond£¬ËùÒÔ±ØĞëÌá¹©¿Õ²ÎÊı¹¹Ôìº¯Êı
+    };          //ç”±äºTupleè¦ä½œä¸ºmapçš„secondï¼Œæ‰€ä»¥å¿…é¡»æä¾›ç©ºå‚æ•°æ„é€ å‡½æ•°
     Tuple(string w, string p, int o = 1, short l1 = 0, short l2 =
           0, short l3 = 0)
  :      word(w), pos(p), occurs(o), local1(l1), local2(l2), local3(l3) {
@@ -46,10 +46,10 @@ int main(int argc, char *argv[])
         istringstream stream(line);
         string word;
         while (stream >> word) {
-            int index = word.find("/"); //Ğ±¸ÜÖ®Ç°ÊÇ´ÊÓï£¬Ğ±¸ÜÖ®ºóÊÇ´ÊĞÔ
+            int index = word.find("/"); //æ–œæ ä¹‹å‰æ˜¯è¯è¯­ï¼Œæ–œæ ä¹‹åæ˜¯è¯æ€§
             string front = word.substr(0, index);
             itr = tmap.find(front);
-            if (itr == tmap.end()) {    //µ½Ä¿Ç°ÎªÖ¹Ã»ÓĞ³öÏÖ¹ı
+            if (itr == tmap.end()) {    //åˆ°ç›®å‰ä¸ºæ­¢æ²¡æœ‰å‡ºç°è¿‡
                 string post = word.substr(index + 1);
                 if (post == "wj")
                     continue;
@@ -68,7 +68,7 @@ int main(int argc, char *argv[])
                     break;
                 }
                 tmap[front] = tuple;
-            } else {    //´ÊÓïÔø³öÏÖ¹ı
+            } else {    //è¯è¯­æ›¾å‡ºç°è¿‡
                 Tuple tuple = tmap[front];
                 tuple.occurs++;
                 switch (i) {
@@ -90,7 +90,7 @@ int main(int argc, char *argv[])
     }
  
     for (itr = tmap.begin(); itr != tmap.end(); ++itr) {
-        //½«£¨´ÊÓï£¬´ÊĞÔ£¬´ÎÊı£¬Î»ÖÃ£©Ğ´ÈëÎÄ¼ş
+        //å°†ï¼ˆè¯è¯­ï¼Œè¯æ€§ï¼Œæ¬¡æ•°ï¼Œä½ç½®ï¼‰å†™å…¥æ–‡ä»¶
         ofs << itr->second.word << "\t" << itr->
             second.pos << "\t" << itr->second.
             occurs << "\t" << itr->second.local1 << "\t" << itr->second.
